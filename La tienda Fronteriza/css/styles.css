@@ -416,11 +416,15 @@ button {
   content: "";
   position: absolute;
   inset: 0;
+  /* Overlay más ligero que antes: la imagen "ARTÍCULOS ORIGINALES" ya es
+     oscura por sí misma, así que basta con oscurecer lo suficiente para
+     que el texto del hero sea legible, sin tapar la textura ni el texto
+     que forma parte de la imagen. */
   background: linear-gradient(
     0deg,
-    rgba(7, 23, 49, 0.92) 0%,
-    rgba(7, 23, 49, 0.55) 42%,
-    rgba(7, 23, 49, 0.15) 75%
+    rgba(7, 23, 49, 0.78) 0%,
+    rgba(7, 23, 49, 0.45) 38%,
+    rgba(7, 23, 49, 0.12) 68%
   );
 }
 
@@ -463,19 +467,6 @@ button {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-}
-
-/* ---------- 4b. BANNER DE MARCA ---------- */
-.brand-banner {
-  max-width: var(--max-width);
-  margin: 32px auto;
-  padding: 0 24px;
-}
-
-.brand-banner img {
-  width: 100%;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
 }
 
 /* ---------- 5. BARRA DE BENEFICIOS ---------- */
@@ -2625,5 +2616,166 @@ button {
 
   .checkout-step-nav .btn {
     width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   13. PEDIDO CONFIRMADO (Fase 8)
+   Reutiliza .review-section / .review-row / .review-product
+   (definidas arriba, en Checkout) para el resumen del pedido.
+--------------------------------------------------------- */
+
+.order-confirmation {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 40px 32px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.order-confirmation-hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.order-confirmation-check {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #1e6b3c;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-confirmation-hero h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.order-confirmation-hero p {
+  color: var(--color-text-muted);
+  font-size: 15px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.order-confirmation-date {
+  margin-top: 10px !important;
+  font-size: 12px !important;
+  color: var(--color-text-muted);
+}
+
+.order-codes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.order-code-box {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.order-code-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.order-code-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+}
+
+.order-status-track {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.order-status-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.order-status-item.is-done {
+  color: var(--color-text);
+}
+
+.order-status-dot {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.order-status-item.is-done .order-status-dot {
+  background: #1e6b3c;
+  border-color: #1e6b3c;
+  color: #fff;
+}
+
+.order-eta {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 28px;
+}
+
+.order-eta strong {
+  color: var(--color-primary);
+}
+
+.order-eta-tag {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.order-confirmation-actions {
+  justify-content: center;
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .order-confirmation {
+    padding: 28px 18px;
+  }
+
+  .order-codes {
+    grid-template-columns: 1fr;
   }
 }

@@ -126,13 +126,18 @@
         <!-- Indicador de pasos: 1 Información → 2 Pago → 3 Revisión -->
         <div class="checkout-steps" id="checkoutSteps"></div>
 
-        <div class="checkout-layout">
+        <div class="checkout-layout" id="checkoutLayout">
           <!-- Paso actual (generado por js/checkout.js) -->
           <div class="checkout-main" id="checkoutStepContent"></div>
 
           <!-- Resumen dinámico del pedido (generado por js/checkout.js) -->
           <aside class="checkout-summary" id="checkoutSummary"></aside>
         </div>
+
+        <!-- Pantalla de "Pedido confirmado" (Fase 8). Reemplaza el layout de
+             pasos una vez que el pago simulado termina correctamente.
+             Generado por js/checkout.js. -->
+        <div class="order-confirmation" id="checkoutConfirmation" hidden></div>
       </div>
 
     </div>

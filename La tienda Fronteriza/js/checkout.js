@@ -73,6 +73,56 @@ function persistCheckoutState() {
 }
 
 /* ---------------------------------------------------------
+   0.1 PEDIDO CONFIRMADO (Fase 8, sessionStorage)
+   Igual que CHECKOUT_DATA_KEY: vive solo mientras dura la sesión
+   del navegador. Guarda el último pedido confirmado para poder
+   mostrar la pantalla de confirmación (incluida su guía de envío
+   simulada) sin depender del carrito, que ya quedó vacío.
+--------------------------------------------------------- */
+const ORDER_DATA_KEY = "tiendaFronteriza_lastOrder";
+
+function saveLastOrder(order) {
+  try {
+    sessionStorage.setItem(ORDER_DATA_KEY, JSON.stringify(order));
+  } catch (e) {
+    // Cuota excedida o almacenamiento no disponible: seguimos sin romper la página.
+  }
+}
+
+function loadLastOrder() {
+  try {
+    const raw = sessionStorage.getItem(ORDER_DATA_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function clearLastOrder() {
+  try {
+    sessionStorage.removeItem(ORDER_DATA_KEY);
+  } catch (e) {
+    // no-op
+  }
+}
+
+// Genera un número de pedido simulado, ej. "TF-482731". Solo identifica el
+// pedido dentro de esta demo: no corresponde a ningún sistema real.
+function generateOrderNumber() {
+  const n = Math.floor(100000 + Math.random() * 900000);
+  return `TF-${n}`;
+}
+
+// Genera una guía de envío simulada, ej. "GF-73928415". NO se conecta con
+// ninguna paquetería real: es solo un identificador de demostración.
+function generateShippingGuide() {
+  const n = Math.floor(10000000 + Math.random() * 90000000);
+  return `GF-${n}`;
+}
+
+/* ---------------------------------------------------------
    1. CALCULADORA DE ENVÍO SIMULADA (por código postal)
    Reglas sencillas y configurables, basadas únicamente en el
    primer dígito del código postal. NO son tarifas reales de
@@ -547,6 +597,87 @@ function setupStep2() {
 }
 
 /* ---------------------------------------------------------
+   7.1 VALIDACIÓN FINAL Y CONSTRUCCIÓN DEL PEDIDO (Fase 8)
+   Antes de mostrar "Pedido confirmado" nos aseguramos de que el
+   carrito, los datos de envío y el método de pago sigan siendo
+   válidos. Si algo falta, NO se genera ningún pedido.
+--------------------------------------------------------- */
+
+function isOrderReadyToConfirm(cart) {
+  if (!cart || cart.length === 0) return false;
+  if (findStockIssues(cart).length > 0) return false;
+  if (!checkoutState.payment) return false;
+
+  const s = checkoutState.shipping;
+  const requiredKeys = ["nombre", "correo", "telefono", "calle", "numExt", "colonia", "ciudad", "estado", "cp"];
+  if (requiredKeys.some((key) => !String(s[key] || "").trim())) return false;
+  if (!EMAIL_REGEX.test(s.correo)) return false;
+  if (!isValidPhone(s.telefono)) return false;
+  if (!CP_REGEX.test(s.cp)) return false;
+
+  return true;
+}
+
+// Arma el objeto de pedido a partir de los mismos datos que ya se usan en
+// el resumen del checkout (carrito, envío, pago). No inventa información.
+function buildOrderFromCheckout(cart) {
+  const s = checkoutState.shipping;
+  const subtotal = calculateSubtotal(cart);
+  const tax = calculateTax(subtotal);
+  const shippingResult = getCurrentShippingResult(cart);
+  const shippingCost = shippingResult.cost || 0;
+  const total = subtotal + tax + shippingCost;
+
+  const paymentLabel =
+    PAYMENT_METHODS.find((m) => m.id === checkoutState.payment)?.label || "No seleccionado";
+
+  const direccion = [
+    `${s.calle} ${s.numExt}${s.numInt ? ` Int. ${s.numInt}` : ""}`,
+    s.colonia,
+    `${s.ciudad}, ${s.estado}`,
+    `C.P. ${s.cp}`,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+
+  const items = cart
+    .map((item) => {
+      const product = findProductForCartItem(item);
+      if (!product) return null;
+      return {
+        name: product.name,
+        brand: product.brand,
+        image: product.image,
+        quantity: item.quantity,
+        unitPrice: product.price,
+        lineTotal: product.price * item.quantity,
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    orderNumber: generateOrderNumber(),
+    shippingGuide: generateShippingGuide(),
+    createdAt: Date.now(),
+    customer: {
+      nombre: s.nombre,
+      correo: s.correo,
+      telefono: s.telefono,
+      direccion,
+    },
+    payment: paymentLabel,
+    items,
+    subtotal,
+    tax,
+    taxRate: TAX_RATE,
+    shippingCost,
+    shippingZone: shippingResult.zona,
+    shippingFree: Boolean(shippingResult.free),
+    total,
+  };
+}
+
+/* ---------------------------------------------------------
    8. PASO 3 — REVISIÓN FINAL
 --------------------------------------------------------- */
 
@@ -629,15 +760,41 @@ function setupStep3() {
     renderCheckoutPage();
   });
 
-  // FASE 7: este botón todavía NO ejecuta ningún pago. La simulación de
-  // pago (spinner, número de pedido, vaciar carrito) corresponde a la Fase 8.
-  document.getElementById("continueToPaymentBtn")?.addEventListener("click", () => {
-    const issues = findStockIssues(getCart());
+  // FASE 8: simulación del pago. Todo ocurre en el navegador con
+  // setTimeout — no hay pasarela de pago real ni backend de por medio.
+  document.getElementById("continueToPaymentBtn")?.addEventListener("click", (e) => {
+    const cart = getCart();
+
+    const issues = findStockIssues(cart);
     if (issues.length > 0) {
       showToast("Corrige las cantidades de tu carrito antes de continuar.");
       renderCheckoutPage();
       return;
     }
+
+    if (!isOrderReadyToConfirm(cart)) {
+      // Algo requerido falta o dejó de ser válido: nunca mostramos una
+      // confirmación falsa. Regresamos al usuario a revisar sus datos.
+      showToast("Faltan datos para completar tu pedido. Revisa los pasos anteriores.");
+      checkoutState.step = 1;
+      persistCheckoutState();
+      renderCheckoutPage();
+      return;
+    }
+
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    btn.textContent = "Procesando pago…";
+
+    // Retardo simulado para que se sienta como un proceso real de pago.
+    setTimeout(() => {
+      const order = buildOrderFromCheckout(cart);
+      saveLastOrder(order);
+      clearCart();
+      checkoutState.step = 4;
+      persistCheckoutState();
+      renderCheckoutPage();
+    }, 1200);
   });
 }
 
@@ -660,6 +817,124 @@ function renderCheckoutEmptyState() {
   const empty = document.getElementById("checkoutEmptyState");
   if (wrap) wrap.hidden = true;
   if (empty) empty.hidden = false;
+  hideConfirmationView();
+}
+
+/* ---------------------------------------------------------
+   8.1 PANTALLA "PEDIDO CONFIRMADO" (Fase 8)
+--------------------------------------------------------- */
+
+function hideConfirmationView() {
+  const confirmation = document.getElementById("checkoutConfirmation");
+  if (!confirmation) return;
+  confirmation.hidden = true;
+  confirmation.innerHTML = "";
+}
+
+function renderOrderConfirmationMarkup(order) {
+  const dateStr = new Date(order.createdAt).toLocaleString("es-MX", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return `
+    <div class="order-confirmation-hero">
+      <div class="order-confirmation-check" aria-hidden="true">✓</div>
+      <h1>¡Pedido confirmado!</h1>
+      <p>Tu compra se realizó correctamente y ya estamos preparando tu pedido.</p>
+      <p class="order-confirmation-date">Confirmado el ${dateStr}</p>
+    </div>
+
+    <div class="order-codes">
+      <div class="order-code-box">
+        <span class="order-code-label">Número de pedido</span>
+        <span class="order-code-value">${order.orderNumber}</span>
+      </div>
+      <div class="order-code-box">
+        <span class="order-code-label">Guía de envío (simulada)</span>
+        <span class="order-code-value">${order.shippingGuide}</span>
+      </div>
+    </div>
+
+    <div class="order-status-track">
+      <div class="order-status-item is-done"><span class="order-status-dot">✓</span><span>Pedido confirmado</span></div>
+      <div class="order-status-item is-done"><span class="order-status-dot">✓</span><span>Pago procesado</span></div>
+      <div class="order-status-item is-done"><span class="order-status-dot">✓</span><span>Pedido preparado para envío</span></div>
+      <div class="order-status-item"><span class="order-status-dot">○</span><span>En camino</span></div>
+    </div>
+
+    <p class="order-eta">Entrega estimada: <strong>3–5 días hábiles</strong> <span class="order-eta-tag">(tiempo simulado)</span></p>
+
+    <div class="review-section">
+      <h3>Datos de envío</h3>
+      <div class="review-row"><span>Nombre</span><span>${escapeHtmlLocal(order.customer.nombre)}</span></div>
+      <div class="review-row"><span>Correo</span><span>${escapeHtmlLocal(order.customer.correo)}</span></div>
+      <div class="review-row"><span>Teléfono</span><span>${escapeHtmlLocal(order.customer.telefono)}</span></div>
+      <div class="review-row"><span>Dirección</span><span>${escapeHtmlLocal(order.customer.direccion)}</span></div>
+    </div>
+
+    <div class="review-section">
+      <h3>Método de pago</h3>
+      <div class="review-row"><span>Seleccionado</span><span>${escapeHtmlLocal(order.payment)}</span></div>
+    </div>
+
+    <div class="review-section">
+      <h3>Productos</h3>
+      ${order.items
+        .map(
+          (item) => `
+            <div class="review-product">
+              <img src="${item.image}" alt="${escapeAttr(item.brand)} ${escapeAttr(item.name)}" />
+              <div class="review-product-info">
+                <div class="review-product-name">${escapeHtmlLocal(item.name)}</div>
+                <div class="review-product-qty">Cantidad: ${item.quantity} · ${formatMoney(item.unitPrice)} c/u</div>
+              </div>
+              <div class="review-product-subtotal">${formatMoney(item.lineTotal)}</div>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+
+    <div class="review-section">
+      <h3>Resumen</h3>
+      <div class="review-row"><span>Subtotal</span><span>${formatMoney(order.subtotal)}</span></div>
+      <div class="review-row"><span>Impuestos (${Math.round(order.taxRate * 100)}%)</span><span>${formatMoney(order.tax)}</span></div>
+      <div class="review-row"><span>Envío${order.shippingZone ? ` (${order.shippingZone})` : ""}</span><span>${
+    order.shippingFree ? "GRATIS" : formatMoney(order.shippingCost)
+  }</span></div>
+      <div class="review-row" style="font-weight:700; font-size:16px; color: var(--color-primary);"><span>TOTAL</span><span>${formatMoney(order.total)}</span></div>
+    </div>
+
+    <div class="checkout-step-nav order-confirmation-actions">
+      <a href="index.html" class="btn btn--primary btn--full">Volver a la tienda</a>
+    </div>
+  `;
+}
+
+function renderOrderConfirmation(order) {
+  const wrap = document.getElementById("checkoutContent");
+  const empty = document.getElementById("checkoutEmptyState");
+  const stockWarning = document.getElementById("checkoutStockWarning");
+  const steps = document.getElementById("checkoutSteps");
+  const layout = document.getElementById("checkoutLayout");
+  const confirmation = document.getElementById("checkoutConfirmation");
+
+  if (wrap) wrap.hidden = false;
+  if (empty) empty.hidden = true;
+  if (stockWarning) {
+    stockWarning.hidden = true;
+    stockWarning.innerHTML = "";
+  }
+  if (steps) steps.hidden = true;
+  if (layout) layout.hidden = true;
+  if (!confirmation) return;
+
+  confirmation.hidden = false;
+  confirmation.innerHTML = renderOrderConfirmationMarkup(order);
 }
 
 function renderStockWarning(issues) {
@@ -713,6 +988,22 @@ function renderCheckoutStep() {
 function renderCheckoutPage() {
   const cart = getCart();
 
+  // Fase 8: si el último paso fue la confirmación y el carrito sigue vacío
+  // (nadie agregó productos nuevos desde entonces), mostramos la pantalla
+  // de "Pedido confirmado" de esa sesión en vez del flujo normal.
+  if (checkoutState.step === 4) {
+    const order = loadLastOrder();
+    if (order && cart.length === 0) {
+      renderOrderConfirmation(order);
+      return;
+    }
+    // No hay pedido guardado, o el usuario ya agregó productos nuevos al
+    // carrito: el pedido anterior ya no aplica, reiniciamos el flujo normal.
+    clearLastOrder();
+    checkoutState.step = 1;
+    persistCheckoutState();
+  }
+
   if (cart.length === 0) {
     renderCheckoutEmptyState();
     return;
@@ -720,8 +1011,13 @@ function renderCheckoutPage() {
 
   const wrap = document.getElementById("checkoutContent");
   const empty = document.getElementById("checkoutEmptyState");
+  const steps = document.getElementById("checkoutSteps");
+  const layout = document.getElementById("checkoutLayout");
   if (wrap) wrap.hidden = false;
   if (empty) empty.hidden = true;
+  if (steps) steps.hidden = false;
+  if (layout) layout.hidden = false;
+  hideConfirmationView();
 
   const issues = findStockIssues(cart);
   renderStockWarning(issues);
