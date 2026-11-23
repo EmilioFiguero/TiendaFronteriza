@@ -1,0 +1,2 @@
+# Bloquear el acceso web a los archivos de almacenamiento
+Require all denied
