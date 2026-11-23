@@ -1,0 +1,17 @@
+# Configuracion privada
+/config/config.php
+.env
+.env.*
+
+# Archivos temporales y registros
+/logs/*
+!/logs/.gitkeep
+
+# Respaldos
+*.bak
+*.backup
+*.zip
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
