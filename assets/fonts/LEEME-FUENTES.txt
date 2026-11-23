@@ -1,0 +1,6 @@
+Tipografías alojadas localmente (Tienda Fronteriza)
+
+- Big Shoulders Display (pesos 600, 700 y 800) y Work Sans (pesos 400, 500, 600 y 700).
+- Archivos WOFF2 del subconjunto latino, obtenidos del paquete npm "@fontsource/big-shoulders-display" y "@fontsource/work-sans" (versión 5.3.0), distribución de las fuentes de Google Fonts.
+- Licencia: SIL Open Font License 1.1 (OFL-1.1). El texto de cada licencia se conserva en este mismo directorio.
+- Se declaran en css/fonts.css mediante @font-face.
