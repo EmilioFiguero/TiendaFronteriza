@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aviso de privacidad — Tienda Fronteriza</title>
+  <meta name="description" content="Aviso de privacidad de Tienda Fronteriza, proyecto académico individual (demostración sin pagos ni entregas reales)." />
+
+  <link rel="stylesheet" href="css/fonts.css" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <!-- Mismo header que index.html / producto.html / carrito.html. Los enlaces del
+       menú apuntan de vuelta a index.html porque sus secciones viven ahí. -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="index.html" class="logo" aria-label="Tienda Fronteriza — ir al inicio">
+        <img src="assets/images/logo.jpg" alt="Tienda Fronteriza" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <span class="logo-text" style="display:none;">
+          <span class="logo-line">TIENDA</span>
+          <span class="logo-line logo-line--accent">FRONTERIZA</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#productos">Productos</a>
+        <a href="index.html#categorias">Categorías</a>
+        <a href="index.html#catalogo">Catálogo</a>
+        <a href="index.html#ofertas">Ofertas</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn search-toggle" id="searchToggle" aria-label="Buscar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <a class="icon-btn" id="favoritesBtn" href="favoritos.html" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+          <span class="cart-count" id="wishlistCount">0</span>
+        </a>
+        <button class="icon-btn cart-btn" id="cartBtn" aria-label="Carrito de compras">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <!-- FASE 6: menú de cuenta. Contenido pintado por js/auth.js según haya o no sesión. -->
+        <div class="account-menu" id="accountMenu">
+          <button type="button" class="icon-btn account-btn" id="accountBtn" aria-label="Iniciar sesión" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-6 8-6s8 1.6 8 6"/></svg>
+          </button>
+          <div class="account-dropdown" id="accountDropdown" hidden>
+            <!-- Generado por js/auth.js -->
+          </div>
+        </div>
+      </div>
+
+      <form class="search-bar" id="searchBar" role="search" autocomplete="off">
+        <div class="search-bar-input-wrap">
+          <input type="search" id="searchInput" placeholder="Buscar productos, marcas o categorías…" aria-label="Buscar productos" />
+          <button type="submit" aria-label="Buscar">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <ul class="search-suggestions" id="searchSuggestions" hidden></ul>
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <!-- ============ CARRITO LATERAL (DRAWER) ============ -->
+  <!-- Mismos datos de LocalStorage que el resto del sitio. Generado por js/cart.js -->
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer-panel" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+      <div class="cart-drawer-header">
+        <h2>Tu carrito</h2>
+        <button type="button" class="cart-drawer-close" id="cartDrawerClose" aria-label="Cerrar carrito">&times;</button>
+      </div>
+      <div class="cart-drawer-body" id="cartDrawerBody">
+        <!-- Generado por js/cart.js -->
+      </div>
+      <div class="cart-drawer-footer" id="cartDrawerFooter">
+        <!-- Generado por js/cart.js -->
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <nav class="breadcrumbs" aria-label="Migas de navegación">
+      <ol>
+        <li><a href="index.html">Inicio</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page">Aviso de privacidad</li>
+      </ol>
+    </nav>
+
+    <div class="section legal-page">
+      <div class="section-header">
+        <h2>Aviso de privacidad</h2>
+      </div>
+      <nav class="legal-nav" aria-label="Políticas y ayuda"><a href="terminos.html">Términos y condiciones</a><a href="privacidad.html" aria-current="page">Aviso de privacidad</a><a href="envios.html">Política de envíos</a><a href="cancelaciones.html">Política de cancelaciones</a><a href="devoluciones.html">Devoluciones y cambios</a><a href="garantias.html">Garantías</a><a href="atencion.html">Atención al cliente</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></nav>
+      <p class="legal-status">Versión 1.0 · Fecha de vigencia: pendiente de definir (se fijará el día de aprobación y publicación definitiva de las páginas legales).</p>
+      <article class="legal-content">
+<aside class="legal-callout"><strong>Demostración académica</strong><p>Este aviso describe el tratamiento de los datos que se capturan en el sitio. Como el sitio es una demostración, <strong>debe utilizarse información ficticia</strong> en el registro y en las compras de prueba.</p></aside>
+<h2 id="s4-1">Responsable</h2>
+<p>El responsable del tratamiento de los datos personales es <strong>Tienda Fronteriza — Proyecto académico individual</strong>. Por tratarse de una demostración, no se señala domicilio comercial. Para cualquier asunto relacionado con este aviso puede escribirse a <strong><a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a></strong>. Esta identificación es <strong>provisional</strong> y adecuada solo para la demostración con datos ficticios: <strong>no ingreses datos personales reales</strong>. La ley exige que el aviso de privacidad indique la identidad y el domicilio del responsable (Ley Federal de Protección de Datos Personales en Posesión de los Particulares, art. 15, fr. I); mientras ese requisito no se complete, este sitio no debe utilizarse para captar datos reales.</p>
+<h2 id="s4-2">Datos que se recaban</h2>
+<div class="legal-table-wrap"><table class="legal-table"><thead><tr><th>Momento</th><th>Datos</th><th>Para qué se usan</th></tr></thead><tbody><tr><td data-label="Momento">Registro</td><td data-label="Datos">Nombre completo, correo electrónico y contraseña (se guarda únicamente su hash de contraseña, nunca la contraseña), y la fecha de creación de la cuenta.</td><td data-label="Para qué se usan">Crear y administrar la cuenta; iniciar sesión.</td></tr><tr><td data-label="Momento">Compra</td><td data-label="Datos">Nombre, correo y teléfono de contacto; domicilio de envío (calle, número exterior e interior, colonia, ciudad, estado y código postal); método de pago elegido (solo su nombre); productos, importes y estado del pedido.</td><td data-label="Para qué se usan">Registrar y gestionar el pedido simulado, calcular el envío y mostrar «Mis pedidos».</td></tr><tr><td data-label="Momento">Aceptación de políticas</td><td data-label="Datos">Usuario, pedido (cuando corresponda), versión de las políticas aceptada, fecha, hora y contexto de la aceptación (registro o compra). <strong>No se guarda la dirección IP ni el navegador.</strong></td><td data-label="Para qué se usan">Conservar constancia de que se aceptaron los términos y el aviso.</td></tr><tr><td data-label="Momento">Carrito y favoritos</td><td data-label="Datos">Productos y cantidades del carrito; productos marcados como favoritos.</td><td data-label="Para qué se usan">Conservar el carrito (en el navegador y, con sesión, en la cuenta) y la lista de favoritos (solo en el navegador).</td></tr><tr><td data-label="Momento">Seguridad</td><td data-label="Datos">Registros técnicos de errores, sin contraseñas (véase el cuadro siguiente); contadores temporales de intentos con identificadores con hash derivados del correo y la dirección IP.</td><td data-label="Para qué se usan">Prevenir abusos y diagnosticar fallas.</td></tr><tr><td data-label="Momento">Solicitudes por correo</td><td data-label="Datos">Los datos que la persona incluya en su mensaje (por ejemplo, el correo de la cuenta y el número de pedido).</td><td data-label="Para qué se usan">Atender consultas, solicitudes de cancelación y derechos sobre datos personales.</td></tr></tbody></table></div>
+<p><strong>Registros técnicos que ya existen</strong></p>
+<p>Independientemente del historial de aceptación, el sitio genera hoy los siguientes registros técnicos, que se documentan por separado:</p>
+<div class="legal-table-wrap"><table class="legal-table"><thead><tr><th>Registro</th><th>Contenido</th><th>Finalidad</th></tr></thead><tbody><tr><td data-label="Registro">Bitácora de auditoría administrativa</td><td data-label="Contenido">Acción realizada, entidad afectada, fecha y hora, administrador que la realizó y su <strong>dirección IP</strong>.</td><td data-label="Finalidad">Seguridad y trazabilidad de las acciones del panel.</td></tr><tr><td data-label="Registro">Contadores de intentos de inicio de sesión</td><td data-label="Contenido">Archivos con nombre en hash; la clave se forma con la IP y el correo, que no aparecen en claro. Se depuran automáticamente cuando tienen más de 2 horas.</td><td data-label="Finalidad">Limitar intentos repetidos.</td></tr><tr><td data-label="Registro">Registro técnico de errores</td><td data-label="Contenido">Fecha, referencia, código y detalle técnico del error, sin contraseñas.</td><td data-label="Finalidad">Diagnóstico de fallas.</td></tr></tbody></table></div>
+<h2 id="s4-3">Datos que no se recaban</h2>
+<p>El sitio <strong>no</strong> solicita números de tarjeta, cuentas bancarias, claves, documentos de identidad ni el RFC, y no recopila datos de ubicación ni datos sensibles. No utiliza herramientas de analítica ni de publicidad.</p>
+<h2 id="s4-4">Finalidades</h2>
+<p>Los datos se usan para: (a) crear y administrar la cuenta; (b) registrar, mostrar y administrar pedidos simulados; (c) calcular costos de envío; (d) proteger la seguridad del sitio; (e) conservar la constancia de aceptación de las políticas; y (f) generar reportes internos de la demostración. <strong>No</strong> se utilizan para mercadotecnia ni se envían correos promocionales, por lo que no existen finalidades secundarias.</p>
+<h2 id="s4-5">Terceros y transferencias</h2>
+<ul>
+<li>Los datos que se capturan en el sitio <strong>no se venden ni se ceden</strong> a terceros; la única intervención externa es la del servicio de correo, descrita en el último punto.</li>
+<li>No participan pasarelas de pago ni empresas de paquetería.</li>
+<li>Las <strong>tipografías se alojan en el propio sitio</strong>; el sitio no carga recursos de servidores externos.</li>
+<li>El correo oficial de atención es <strong><a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a></strong>, una cuenta de <strong>Gmail, servicio de Google</strong>: los mensajes que se envíen a esa dirección son tratados por Google conforme a sus propias condiciones. <strong>Se recomienda no enviar datos sensibles ni innecesarios</strong> (contraseñas, números de tarjeta o de cuenta, documentos de identidad); basta con el número de pedido y el correo de la cuenta.</li>
+</ul>
+<h2 id="s4-6">Quién puede consultar los datos</h2>
+<p>Solo el personal con rol administrador puede consultar, desde el panel, los datos de cuentas y pedidos, incluidos los de envío. Las acciones administrativas quedan registradas en una bitácora de auditoría que incluye la dirección IP del administrador. Los reportes muestran el nombre abreviado y el correo enmascarado, y no incluyen teléfonos ni domicilios.</p>
+<h2 id="s4-7">Cookies y almacenamiento local</h2>
+<div class="legal-table-wrap"><table class="legal-table"><thead><tr><th>Elemento</th><th>Uso</th></tr></thead><tbody><tr><td data-label="Elemento">Cookie <code>TFSESSID</code></td><td data-label="Uso">Mantiene la sesión iniciada. Es técnica y necesaria, no es accesible desde JavaScript (HttpOnly), se limita al sitio y se elimina al cerrar el navegador.</td></tr><tr><td data-label="Elemento">Almacenamiento local del navegador</td><td data-label="Uso">Guarda el carrito del visitante, los cambios pendientes de sincronización y los favoritos. Puede borrarse desde la configuración del navegador.</td></tr></tbody></table></div>
+<p>El sitio no usa cookies publicitarias ni de analítica.</p>
+<h2 id="s4-8">Medidas de seguridad</h2>
+<p>Entre otras medidas, las contraseñas se almacenan como hash de contraseña, las sesiones usan cookies protegidas y token contra solicitudes falsificadas, el acceso al panel se comprueba en cada solicitud según el rol, las consultas a la base de datos se parametrizan y se limitan los intentos repetidos. Ningún sistema es totalmente invulnerable, por lo que no se puede garantizar seguridad absoluta. La demostración funciona en un entorno local (XAMPP); <strong>si se publicara en internet, el uso de HTTPS será un requisito previo</strong>.</p>
+<h2 id="s4-9">Conservación</h2>
+<p>Los datos de demostración (cuentas, pedidos y su historial) se conservan <strong>como máximo seis meses después de finalizar la evaluación académica</strong>. Antes de ese plazo se revisarán y eliminarán de forma segura, incluidos los respaldos que los contengan. <strong>El sistema no cuenta con una función automática de eliminación</strong>: la revisión y la supresión se realizan manualmente. Cuando corresponda legalmente, se atenderán las solicitudes de eliminación de datos (véase «Derechos de acceso, rectificación, cancelación y oposición»). Los contadores temporales de intentos se depuran automáticamente (los de más de 2 horas).</p>
+<h2 id="s4-10">Derechos de acceso, rectificación, cancelación y oposición</h2>
+<p>La persona titular puede solicitar el acceso a sus datos, su rectificación, cancelación u oposición a su tratamiento escribiendo a <strong><a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a></strong>, desde el correo de su cuenta y señalando el derecho que desea ejercer y los datos de su solicitud. Las solicitudes se revisan <strong>manualmente</strong>. Como el perfil es de solo lectura, el sitio no ofrece por sí mismo funciones para editar o eliminar datos.</p>
+<ul>
+<li><strong>Plazos legales:</strong> la respuesta se comunica dentro de un máximo de 20 días hábiles desde la recepción de la solicitud y, si procede, la medida se hace efectiva dentro de los 15 días hábiles siguientes; ambos plazos pueden ampliarse una sola vez por un periodo igual si las circunstancias lo justifican (LFPDPPP, art. 31).</li>
+<li><strong>Costo:</strong> el ejercicio de estos derechos es gratuito; solo podrían cobrarse costos de reproducción o envío (art. 34).</li>
+<li><strong>Autoridad:</strong> quien considere vulnerado su derecho puede acudir ante la autoridad competente en materia de protección de datos personales, actualmente la Secretaría Anticorrupción y Buen Gobierno (art. 2, fr. XV).</li>
+</ul>
+<h2 id="s4-11">Edad mínima</h2>
+<p>El registro está destinado a <strong>personas de 18 años o más</strong>. El sitio no comprueba la edad; quien se registra declara cumplir este requisito.</p>
+<h2 id="s4-12">Cambios al aviso</h2>
+<p>Este aviso puede actualizarse. Los cambios se comunicarán publicando la nueva versión en el sitio, con su fecha. La versión pública es la <strong>1.0</strong>, cuya fecha de vigencia se fijará el día de la aprobación y publicación definitiva de las páginas legales en la tienda local, después de las pruebas; hasta entonces está pendiente de definir.</p>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="contacto">
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <span class="logo-line">TIENDA</span>
+        <span class="logo-line logo-line--accent">FRONTERIZA</span>
+        <p class="footer-slogan">Marcas que cruzan fronteras.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Tienda</h3>
+        <ul>
+          <li><a href="index.html#productos">Productos</a></li>
+          <li><a href="index.html#categorias">Categorías</a></li>
+          <li><a href="index.html#ofertas">Ofertas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Información</h3>
+        <ul>
+          <li><a href="index.html#nosotros">Nosotros</a></li>
+          <li><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></li>
+          <li><a href="envios.html">Envíos</a></li>
+          <li><a href="devoluciones.html">Cambios y devoluciones</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="terminos.html">Términos y condiciones</a></li>
+          <li><a href="privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="cancelaciones.html">Cancelaciones</a></li>
+          <li><a href="garantias.html">Garantías</a></li>
+          <li><a href="atencion.html">Atención al cliente</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href="mailto:tiendafronteriza.soporte@gmail.com">Correo</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Tienda Fronteriza</p>
+      <p class="footer-academic">Tienda Fronteriza — Proyecto académico individual. Demostración sin pagos ni entregas reales.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

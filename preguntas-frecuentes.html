@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preguntas frecuentes — Tienda Fronteriza</title>
+  <meta name="description" content="Preguntas frecuentes de Tienda Fronteriza, proyecto académico individual (demostración sin pagos ni entregas reales)." />
+
+  <link rel="stylesheet" href="css/fonts.css" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <!-- Mismo header que index.html / producto.html / carrito.html. Los enlaces del
+       menú apuntan de vuelta a index.html porque sus secciones viven ahí. -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="index.html" class="logo" aria-label="Tienda Fronteriza — ir al inicio">
+        <img src="assets/images/logo.jpg" alt="Tienda Fronteriza" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <span class="logo-text" style="display:none;">
+          <span class="logo-line">TIENDA</span>
+          <span class="logo-line logo-line--accent">FRONTERIZA</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#productos">Productos</a>
+        <a href="index.html#categorias">Categorías</a>
+        <a href="index.html#catalogo">Catálogo</a>
+        <a href="index.html#ofertas">Ofertas</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn search-toggle" id="searchToggle" aria-label="Buscar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <a class="icon-btn" id="favoritesBtn" href="favoritos.html" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+          <span class="cart-count" id="wishlistCount">0</span>
+        </a>
+        <button class="icon-btn cart-btn" id="cartBtn" aria-label="Carrito de compras">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <!-- FASE 6: menú de cuenta. Contenido pintado por js/auth.js según haya o no sesión. -->
+        <div class="account-menu" id="accountMenu">
+          <button type="button" class="icon-btn account-btn" id="accountBtn" aria-label="Iniciar sesión" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-6 8-6s8 1.6 8 6"/></svg>
+          </button>
+          <div class="account-dropdown" id="accountDropdown" hidden>
+            <!-- Generado por js/auth.js -->
+          </div>
+        </div>
+      </div>
+
+      <form class="search-bar" id="searchBar" role="search" autocomplete="off">
+        <div class="search-bar-input-wrap">
+          <input type="search" id="searchInput" placeholder="Buscar productos, marcas o categorías…" aria-label="Buscar productos" />
+          <button type="submit" aria-label="Buscar">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <ul class="search-suggestions" id="searchSuggestions" hidden></ul>
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <!-- ============ CARRITO LATERAL (DRAWER) ============ -->
+  <!-- Mismos datos de LocalStorage que el resto del sitio. Generado por js/cart.js -->
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer-panel" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+      <div class="cart-drawer-header">
+        <h2>Tu carrito</h2>
+        <button type="button" class="cart-drawer-close" id="cartDrawerClose" aria-label="Cerrar carrito">&times;</button>
+      </div>
+      <div class="cart-drawer-body" id="cartDrawerBody">
+        <!-- Generado por js/cart.js -->
+      </div>
+      <div class="cart-drawer-footer" id="cartDrawerFooter">
+        <!-- Generado por js/cart.js -->
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <nav class="breadcrumbs" aria-label="Migas de navegación">
+      <ol>
+        <li><a href="index.html">Inicio</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page">Preguntas frecuentes</li>
+      </ol>
+    </nav>
+
+    <div class="section legal-page">
+      <div class="section-header">
+        <h2>Preguntas frecuentes</h2>
+      </div>
+      <nav class="legal-nav" aria-label="Políticas y ayuda"><a href="terminos.html">Términos y condiciones</a><a href="privacidad.html">Aviso de privacidad</a><a href="envios.html">Política de envíos</a><a href="cancelaciones.html">Política de cancelaciones</a><a href="devoluciones.html">Devoluciones y cambios</a><a href="garantias.html">Garantías</a><a href="atencion.html">Atención al cliente</a><a href="preguntas-frecuentes.html" aria-current="page">Preguntas frecuentes</a></nav>
+      <p class="legal-status">Versión 1.0 · Fecha de vigencia: pendiente de definir (se fijará el día de aprobación y publicación definitiva de las páginas legales).</p>
+      <article class="legal-content">
+<aside class="legal-callout"><strong>Importante</strong><p>Tienda Fronteriza es un <strong>proyecto académico</strong>: los pagos, pedidos y envíos son <strong>simulaciones</strong>. No se realiza ningún cobro ni se entrega ningún producto real.</p></aside>
+<details class="faq-item" id="p1"><summary>¿Qué es Tienda Fronteriza?</summary><div class="faq-answer">
+<p>Es una tienda en línea de ropa y bolsas desarrollada como proyecto académico individual. Funciona como demostración: puedes recorrer el catálogo, armar un carrito y generar un pedido, pero <strong>nada de esto es una operación comercial real</strong>.</p>
+<p class="faq-more">Más información: <a href="terminos.html">Términos y condiciones</a></p></div></details>
+<details class="faq-item" id="p2"><summary>¿Quién puede registrarse y qué datos debo usar?</summary><div class="faq-answer">
+<p>El registro es para personas de <strong>18 años o más</strong> y requiere marcar la casilla que confirma que tienes esa edad y que aceptas los <a href="terminos.html">Términos y condiciones</a> y el <a href="privacidad.html">Aviso de privacidad</a>. Como se trata de una demostración, te pedimos usar <strong>datos ficticios</strong>; no escribas información personal, bancaria o de tarjetas reales.</p>
+<p class="faq-more">Más información: <a href="terminos.html">Términos y condiciones</a></p></div></details>
+<details class="faq-item" id="p3"><summary>¿Se cobra realmente mi compra?</summary><div class="faq-answer">
+<p>No. El pago es una simulación: al elegir tarjeta, PayPal o transferencia solo se registra el nombre del método. <strong>El sitio no pide ni guarda números de tarjeta ni datos bancarios.</strong></p>
+<p class="faq-more">Más información: <a href="terminos.html">Términos y condiciones</a></p></div></details>
+<details class="faq-item" id="p4"><summary>¿Cuánto cuesta el envío?</summary><div class="faq-answer">
+<p>El costo lo calcula el sistema según el código postal: de $59 a $149 pesos, según la zona. Los pedidos con subtotal de <strong>$1,500.00 o más</strong> tienen envío gratis. Los precios muestran el desglose de subtotal, IVA (16 %), envío y total antes de confirmar. Todo es simulado.</p>
+<p class="faq-more">Más información: <a href="envios.html">Política de envíos</a></p></div></details>
+<details class="faq-item" id="p5"><summary>¿A qué lugares se envía y cuánto tarda?</summary><div class="faq-answer">
+<p>La cobertura simulada incluye todo México. La entrega estimada es de <strong>3 a 5 días hábiles</strong>, un tiempo ficticio: no se entrega ningún paquete real.</p>
+<p class="faq-more">Más información: <a href="envios.html">Política de envíos</a></p></div></details>
+<details class="faq-item" id="p6"><summary>¿Cómo solicito la cancelación de un pedido?</summary><div class="faq-answer">
+<p>Escribe a <a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a> indicando tu número de pedido (formato TF-######). Puedes solicitarla mientras el pedido esté en estado Pendiente o Pagado, siempre que no haya pasado a Preparado. La cancelación la ejecuta la administración de la tienda tras verificar el estado del pedido; no se hace desde tu cuenta. Al cancelarse, los productos regresan al inventario.</p>
+<p class="faq-more">Más información: <a href="cancelaciones.html">Política de cancelaciones</a></p></div></details>
+<details class="faq-item" id="p7"><summary>¿Puedo devolver o cambiar un producto?</summary><div class="faq-answer">
+<p>Las políticas de devoluciones y cambios son <strong>informativas</strong>: el sitio no procesa devoluciones ni cambios reales. Si la tienda operara comercialmente, se aplicarían los derechos previstos en la Ley Federal de Protección al Consumidor.</p>
+<p class="faq-more">Más información: <a href="devoluciones.html">Devoluciones y cambios</a></p></div></details>
+<details class="faq-item" id="p8"><summary>¿Los productos tienen garantía?</summary><div class="faq-answer">
+<p>La política de garantías también es <strong>informativa</strong>: no existen reclamaciones reales. En una operación comercial real, aplicarían las garantías y la responsabilidad por vicios ocultos que establece la ley.</p>
+<p class="faq-more">Más información: <a href="garantias.html">Garantías</a></p></div></details>
+<details class="faq-item" id="p9"><summary>¿Cómo protegen mis datos y cómo ejerzo mis derechos ARCO?</summary><div class="faq-answer">
+<p>Tus datos se usan solo para el funcionamiento de la demostración y el acceso está limitado a la administración; no se venden ni se ceden a terceros. Para ejercer tus derechos de acceso, rectificación, cancelación u oposición, escribe a <a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a>. Las solicitudes se revisan manualmente y se atienden en los plazos que marca la ley; el ejercicio no tiene costo. Los datos de demostración se conservan como máximo seis meses después de finalizar la evaluación académica y se eliminan de forma segura (la eliminación se hace manualmente, no de forma automática). Consulta el Aviso de privacidad para conocer los detalles.</p>
+<p class="faq-more">Más información: <a href="privacidad.html">Aviso de privacidad</a></p></div></details>
+<details class="faq-item" id="p10"><summary>¿Cómo contacto a la tienda y en qué horario?</summary><div class="faq-answer">
+<p>Por correo electrónico: <a href="mailto:tiendafronteriza.soporte@gmail.com">tiendafronteriza.soporte@gmail.com</a> (una cuenta de Gmail, servicio de Google). Te recomendamos no enviar datos sensibles ni innecesarios; basta con tu número de pedido y el correo de tu cuenta. El horario ilustrativo de atención es de lunes a viernes, de 9:00 a 18:00 h (hora de Nuevo Laredo). Para consultas generales, el tiempo estimado de respuesta es de <strong>24 a 48 horas hábiles</strong>; es una referencia ilustrativa y no una garantía de atención. Las solicitudes de derechos ARCO se atienden en los plazos legales, que son distintos. No se ofrece atención por teléfono ni WhatsApp.</p>
+<p class="faq-more">Más información: <a href="atencion.html">Atención al cliente</a></p></div></details>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="contacto">
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <span class="logo-line">TIENDA</span>
+        <span class="logo-line logo-line--accent">FRONTERIZA</span>
+        <p class="footer-slogan">Marcas que cruzan fronteras.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Tienda</h3>
+        <ul>
+          <li><a href="index.html#productos">Productos</a></li>
+          <li><a href="index.html#categorias">Categorías</a></li>
+          <li><a href="index.html#ofertas">Ofertas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Información</h3>
+        <ul>
+          <li><a href="index.html#nosotros">Nosotros</a></li>
+          <li><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></li>
+          <li><a href="envios.html">Envíos</a></li>
+          <li><a href="devoluciones.html">Cambios y devoluciones</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="terminos.html">Términos y condiciones</a></li>
+          <li><a href="privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="cancelaciones.html">Cancelaciones</a></li>
+          <li><a href="garantias.html">Garantías</a></li>
+          <li><a href="atencion.html">Atención al cliente</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href="mailto:tiendafronteriza.soporte@gmail.com">Correo</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Tienda Fronteriza</p>
+      <p class="footer-academic">Tienda Fronteriza — Proyecto académico individual. Demostración sin pagos ni entregas reales.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
